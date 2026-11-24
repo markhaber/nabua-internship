@@ -134,13 +134,14 @@ Add these environment variables in the host dashboard:
 | `DB_USER` | Dedicated non-root application database user |
 | `DB_PASSWORD` | Database password |
 | `DB_SSL` | `true` |
+| `DB_SSL_CA` | Provider CA certificate PEM when the database uses a private CA; leave empty for a publicly trusted certificate |
 
 Generate a session secret locally with
 `node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"`.
 Enter it directly into the hosting dashboard and never commit it. The app
 requires MySQL configuration in production, uses TLS with certificate
-validation, trusts one reverse proxy, uses secure production cookies, and
-reads the listening port from `PORT`.
+validation, accepts a provider CA through `DB_SSL_CA`, trusts one reverse proxy,
+uses secure production cookies, and reads the listening port from `PORT`.
 
 Deploy and test the platform-provided URL before changing DNS. Confirm the page
 loads, an account can sign in, and application list/slot requests work. Check

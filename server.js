@@ -34,7 +34,12 @@ if (useMysql) {
     throw new Error("Production requires DB_HOST, DB_USER, DB_PASSWORD, and DB_NAME.");
   }
   const ssl = production || process.env.DB_SSL === "true"
-    ? { rejectUnauthorized: production || process.env.DB_SSL_REJECT_UNAUTHORIZED !== "false" }
+    ? {
+        rejectUnauthorized: production || process.env.DB_SSL_REJECT_UNAUTHORIZED !== "false",
+        ...(process.env.DB_SSL_CA
+          ? { ca: process.env.DB_SSL_CA.replace(/\\n/g, "\n") }
+          : {})
+      }
     : undefined;
   callbackPool = mysql.createPool({
     host: process.env.DB_HOST,
